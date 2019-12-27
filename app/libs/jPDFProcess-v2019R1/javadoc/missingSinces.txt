@@ -1,0 +1,54 @@
+MISSING @SINCE TAG: com.qoppa.pdfProcess.PDFDocument Method addEmbeddedFile(java.io.InputStream, java.lang.String, java.util.Date, java.util.Date, com.qoppa.pdf.EmbedFileOptions)
+MISSING @SINCE TAG: com.qoppa.pdf.dom.IPDFDocument Method close()
+MISSING @SINCE TAG: com.qoppa.pdfProcess.PDFPage Method containsInvisibleText()
+MISSING @SINCE TAG: com.qoppa.pdf.form.AcroForm Method exportAsCSV(java.io.OutputStream, boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.form.AcroForm Method exportAsCSV(java.lang.String, boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.form.AcroForm Method exportAsText(java.io.OutputStream, boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.form.AcroForm Method exportAsText(java.lang.String, boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.dom.IPDFPage Method findTextWithContextUsingRegEx(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method getAuthorTitle()
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method getCopyrightInfoURL()
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method getCopyrightNotice()
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method getCopyrightStatus()
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method getDescriptionWriter()
+MISSING @SINCE TAG: com.qoppa.pdf.form.FormField Method getFieldFlags()
+MISSING @SINCE TAG: com.qoppa.pdf.annotations.FreeText Method getRichContents()
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Method getRichValue()
+MISSING @SINCE TAG: com.qoppa.pdf.SignatureValidity Method isDocReconstructed()
+MISSING @SINCE TAG: com.qoppa.pdf.resources.IFontResource Method isEmbedded()
+MISSING @SINCE TAG: com.qoppa.pdf.permissions.AllPDFPermissions Method isEnforceDocMDPPermissions()
+MISSING @SINCE TAG: com.qoppa.pdf.permissions.AllPDFPermissions Method isEnforceSignaturePermissions()
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Method isRichText()
+MISSING @SINCE TAG: com.qoppa.pdf.SignatureValidity Method isValidByteRange()
+MISSING @SINCE TAG: com.qoppa.pdf.SignatureAppearance Method isVisibleReason()
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method setAuthorTitle(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method setCopyrightInfoURL(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method setCopyrightNotice(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method setCopyrightStatus(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.DocumentInfo Method setDescriptionWriter(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.SignatureValidity Method setDocReconstructed(boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.permissions.AllPDFPermissions Method setEnforceDocMDPPermissions(boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.permissions.AllPDFPermissions Method setEnforceSignaturePermissions(boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.annotations.FreeText Method setRichContents(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Method setRichValue(java.lang.String)
+MISSING @SINCE TAG: com.qoppa.pdf.SignatureValidity Method setValidByteRange(boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.SignatureAppearance Method setVisibleReason(boolean)
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Field FF_COMB
+MISSING @SINCE TAG: com.qoppa.pdf.form.ChoiceField Field FF_COMBO
+MISSING @SINCE TAG: com.qoppa.pdf.form.ChoiceField Field FF_COMMITONSELECTION
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Field FF_DONOTSCROLL
+MISSING @SINCE TAG: com.qoppa.pdf.form.ChoiceField Field FF_DONOTSPELLCHECK
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Field FF_DONOTSPELLCHECK
+MISSING @SINCE TAG: com.qoppa.pdf.form.ChoiceField Field FF_EDIT
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Field FF_FILESELECT
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Field FF_MULTILINE
+MISSING @SINCE TAG: com.qoppa.pdf.form.ChoiceField Field FF_MULTISELECT
+MISSING @SINCE TAG: com.qoppa.pdf.form.FormField Field FF_NOEXPORT
+MISSING @SINCE TAG: com.qoppa.pdf.form.RadioButtonGroupField Field FF_NOTOGGLETOOFF
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Field FF_PASSWORD
+MISSING @SINCE TAG: com.qoppa.pdf.form.PushButtonField Field FF_PUSHBUTTON
+MISSING @SINCE TAG: com.qoppa.pdf.form.RadioButtonGroupField Field FF_RADIO
+MISSING @SINCE TAG: com.qoppa.pdf.form.FormField Field FF_READONLY
+MISSING @SINCE TAG: com.qoppa.pdf.form.FormField Field FF_REQUIRED
+MISSING @SINCE TAG: com.qoppa.pdf.form.TextField Field FF_RICHTEXT
+MISSING @SINCE TAG: com.qoppa.pdf.form.ChoiceField Field FF_SORT

@@ -1,0 +1,4 @@
+# Memory allocated. This number can be increased, i.e. change 768 into 1024 
+-Xmx768m
+# Debug flag to turn on debug mode and error logging 
+-Dqoppa.debug=true

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BE proj3</string>
+    <string-array name="lang_arrays">
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Marathi</item>
+        <item>Bengali</item>
+        <item>Tamil</item>
+        <item>Telugu</item>
+    </string-array>
+</resources>

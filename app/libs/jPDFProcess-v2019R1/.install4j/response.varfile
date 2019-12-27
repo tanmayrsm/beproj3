@@ -1,0 +1,8 @@
+# install4j response file for jPDFProcess v2019R1
+executeLauncherAction$Boolean=true
+sys.adminRights$Boolean=true
+sys.installationDir=D\:\\Tan\\BEproj3\\app\\libs\\jPDFProcess-v2019R1
+sys.languageId=en
+sys.programGroupAllUsers$Boolean=true
+sys.programGroupDisabled$Boolean=false
+sys.programGroupName=jPDFProcess

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".chat_history"
+    android:padding="15dp"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="uska_naam"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:id="@+id/uska_naam"
+        android:textColor="@android:color/black"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:switchMinWidth="56dp"
+        android:layout_marginTop="1dp"
+        android:text="Switch Language  "
+        android:checked="false"
+        android:textOff="OFF"
+        android:textOn="ON"/>
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:background = "@drawable/ic_launcher_background"
+            android:id="@+id/view_doc"
+            android:text="View"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="Send Doc"
+            android:id="@+id/send_doc"
+            android:textAllCaps="false"/>
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerview2"
+        android:layout_marginTop="5dp"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/native_recyclerview"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+
+</LinearLayout>
