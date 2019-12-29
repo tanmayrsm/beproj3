@@ -43,12 +43,23 @@
             android:textAllCaps="false"/>
 
         <Button
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:background = "@drawable/ic_launcher_background"
+            android:id="@+id/real_time_ocr"
+            android:text="Ocr"
+            android:textAllCaps="false"/>
+
+        <Button
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
             android:text="Send Doc"
             android:id="@+id/send_doc"
             android:textAllCaps="false"/>
+
+
 
 
     </LinearLayout>

@@ -69,7 +69,7 @@ public class chat_history extends AppCompatActivity {
     Switch s2;
     FirebaseUser firebaseUser;
     StorageReference storageReference;
-    Button send_docu, view_docu;
+    Button send_docu, view_docu, view_ocr;
 
     private String checker = "";
     public String TAG = "permission";
@@ -95,6 +95,7 @@ public class chat_history extends AppCompatActivity {
         ch_with = findViewById(R.id.uska_naam);
         recyclerViewr = findViewById(R.id.recyclerview2);
         native_recycler = findViewById(R.id.native_recyclerview);
+        view_ocr = findViewById(R.id.real_time_ocr);
 
         //p = findViewById(R.id.pdfView);
 
@@ -122,6 +123,12 @@ public class chat_history extends AppCompatActivity {
                 chooseFile.setType("*/*");
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+            }
+        });
+        view_ocr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(chat_history.this,ocr.class));
             }
         });
 
