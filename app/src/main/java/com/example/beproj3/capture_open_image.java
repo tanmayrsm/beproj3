@@ -90,7 +90,7 @@ public class capture_open_image extends AppCompatActivity {
                 Bitmap bm=((BitmapDrawable)im.getDrawable()).getBitmap();
                 Log.e("bm - ",String.valueOf(bm));
                 FirebaseVisionImage firebaseVisionImage2 = FirebaseVisionImage.fromBitmap(bm);
-                recognizeTextCloud(firebaseVisionImage2);
+                // recognizeTextCloud(firebaseVisionImage2);
             }
         });
     }

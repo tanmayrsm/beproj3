@@ -107,7 +107,38 @@
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
+    <!-- smart reply -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_above="@+id/ttl"
+        android:id="@+id/smart_rep"
+        android:visibility="visible"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="5dp"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    </LinearLayout>
     <!-- chat btn -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -141,6 +172,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_launcher_background"/>
     </LinearLayout>
+
     <!-- chat btn close -->
 
     <LinearLayout

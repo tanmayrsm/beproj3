@@ -16,6 +16,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import com.example.beproj3.Adapters.AllChatsAdapter;
 import com.example.beproj3.Models.Chats;
 import com.example.beproj3.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +48,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.languageid.FirebaseLanguageIdentification;
+import com.google.firebase.ml.naturallanguage.smartreply.FirebaseSmartReply;
+import com.google.firebase.ml.naturallanguage.smartreply.FirebaseTextMessage;
+import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestion;
+import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestionResult;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
@@ -77,6 +83,8 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference reference;
+
+
 
     TextView connected_name ,first_txtvu;
 
@@ -1101,6 +1109,40 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
 
         Toast.makeText(this, "Ye kesa hai twice", Toast.LENGTH_SHORT).show();
         jugni(returnedText.getText().toString());
+        Time now = new Time();
+        now.setToNow();
+
+        ArrayList<FirebaseTextMessage> conversation = new ArrayList<FirebaseTextMessage>();
+        conversation.add(FirebaseTextMessage.createForLocalUser(
+                returnedText.getText().toString(), System.currentTimeMillis()));
+
+        FirebaseSmartReply smartReply = FirebaseNaturalLanguage.getInstance().getSmartReply();
+        smartReply.suggestReplies(conversation)
+                .addOnSuccessListener(new OnSuccessListener<SmartReplySuggestionResult>() {
+                    @Override
+                    public void onSuccess(SmartReplySuggestionResult result) {
+                        if (result.getStatus() == SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
+                            // The conversation's language isn't supported, so the
+                            // the result doesn't contain any suggestions.
+                            Toast.makeText(CallGoingActivity.this, "Na hua reply 1", Toast.LENGTH_SHORT).show();
+                        } else if (result.getStatus() == SmartReplySuggestionResult.STATUS_SUCCESS) {
+                            // Task completed successfully
+                            // ...
+                            for (SmartReplySuggestion suggestion : result.getSuggestions()) {
+                                Log.e("Reply:",suggestion.getText());
+                            }
+//                                close wgera kuch rheega..cuz it's passing same text each  time
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Task failed with an exception
+                        // ...
+                        Toast.makeText(CallGoingActivity.this, "Na hua reply", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 

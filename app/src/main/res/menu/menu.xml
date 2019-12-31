@@ -4,4 +4,9 @@
         android:id="@+id/menu_logout"
         android:title="Logout"/>
 
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="Settings"/>
+
 </menu>

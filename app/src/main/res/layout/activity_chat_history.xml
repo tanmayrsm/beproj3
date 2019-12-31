@@ -52,6 +52,15 @@
             android:textAllCaps="false"/>
 
         <Button
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:background = "@drawable/ic_launcher_background"
+            android:id="@+id/lang_ocr"
+            android:text="lang_Ocr"
+            android:textAllCaps="false"/>
+
+        <Button
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
