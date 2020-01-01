@@ -9,4 +9,8 @@
         android:orderInCategory="100"
         android:title="Settings"/>
 
+    <item
+        android:id="@+id/eng_ocr"
+        android:title="Eng _OCR"/>
+
 </menu>

@@ -173,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this ,Login.class));
             }
         }
+        else if(item.getItemId() == R.id.eng_ocr){
+            startActivity(new Intent(MainActivity.this,capture_open_image.class));
+        }
         return super.onOptionsItemSelected(item);
     }
 

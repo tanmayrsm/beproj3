@@ -32,6 +32,7 @@ import android.widget.ToggleButton;
 
 import com.example.beproj3.Adapters.AllChatsAdapter;
 import com.example.beproj3.Models.Chats;
+import com.example.beproj3.Models.SmartSuggestionList;
 import com.example.beproj3.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,6 +45,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
@@ -55,6 +57,7 @@ import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestionRes
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.SinchClient;
 import com.sinch.android.rtc.calling.Call;
@@ -68,7 +71,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CallGoingActivity extends AppCompatActivity implements RecognitionListener{
-    Button end ,view_conv_text ,view_lang;
+    Button end ,view_conv_text ,view_lang ,b11,b21,b31;
     Call call;
     User user;
     EditText chat_edittext;
@@ -84,8 +87,6 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
     FirebaseUser firebaseUser;
     DatabaseReference reference;
 
-
-
     TextView connected_name ,first_txtvu;
 
     SinchClient sinchClient;
@@ -93,7 +94,7 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
     private static final int REQUEST_RECORD_PERMISSION = 100;
     private int maxLinesInput = 10;
     private TextView returnedText ,result;
-    private ToggleButton toggleButton;
+    public ToggleButton toggleButton;
     private ProgressBar progressBar;
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
@@ -117,6 +118,10 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
         end = findViewById(R.id.end_call_btn);
         connected_name = findViewById(R.id.conn_name);
         first_txtvu = findViewById(R.id.ram);
+
+        b11 = findViewById(R.id.b1);
+        b21 = findViewById(R.id.b2);
+        b31 = findViewById(R.id.b3);
 
         chat_edittext = findViewById(R.id.chat_text);
         send = findViewById(R.id.btn_send);
@@ -293,7 +298,35 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
             }
         });
 
+        b11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jugni2(b11.getText().toString() ,firebaseUser.getUid());
+                b11.setVisibility(View.GONE);
+                b21.setVisibility(View.GONE);
+                b31.setVisibility(View.GONE);
+            }
+        });
 
+        b21.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jugni2(b21.getText().toString() ,firebaseUser.getUid());
+                b11.setVisibility(View.GONE);
+                b21.setVisibility(View.GONE);
+                b31.setVisibility(View.GONE);
+            }
+        });
+
+        b31.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jugni2(b31.getText().toString() ,firebaseUser.getUid());
+                b11.setVisibility(View.GONE);
+                b21.setVisibility(View.GONE);
+                b31.setVisibility(View.GONE);
+            }
+        });
 
         view_conv_text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -872,6 +905,82 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                             String phone_karne_wale_ka_id = dataSnapshot.getValue().toString();
                             uskaId = phone_karne_wale_ka_id;
 
+                            //check if smart reply exists
+                            DatabaseReference chk_exists = FirebaseDatabase.getInstance().getReference()
+                                    .child("smart_reply").child(firebaseUser.getUid());
+                            chk_exists.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        ///get reply in boxes
+
+                                        DatabaseReference get_reply = FirebaseDatabase.getInstance().getReference()
+                                                .child("smart_reply").child(firebaseUser.getUid()).child(uskaId);
+                                        get_reply.child("msg1").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                b11 = findViewById(R.id.b1);
+                                                if(dataSnapshot.getValue().toString().equals("")){
+                                                    b11.setVisibility(View.GONE);
+                                                }
+                                                else{
+                                                    b11.setVisibility(View.VISIBLE);
+                                                    b11.setText(dataSnapshot.getValue().toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                        get_reply.child("msg2").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                b21 = findViewById(R.id.b2);
+                                                if(dataSnapshot.getValue().toString().equals("")){
+                                                    b21.setVisibility(View.GONE);
+                                                }
+                                                else{
+                                                    b21.setVisibility(View.VISIBLE);
+                                                    b21.setText(dataSnapshot.getValue().toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                        get_reply.child("msg3").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                b31 = findViewById(R.id.b3);
+                                                if(dataSnapshot.getValue().toString().equals("")){
+                                                    b31.setVisibility(View.GONE);
+                                                }
+                                                else{
+                                                    b31.setVisibility(View.VISIBLE);
+                                                    b31.setText(dataSnapshot.getValue().toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+
                             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference()
                                     .child("Users").child(phone_karne_wale_ka_id).child("name");
                             ref2.addValueEventListener(new ValueEventListener() {
@@ -890,6 +999,29 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                                             Chats chat = dataSnapshot.getValue(Chats.class);
                                             chatlist.add(chat);
                                             chatsAdapter.notifyDataSetChanged();
+
+//                                            DatabaseReference databaseReferencee = FirebaseDatabase.getInstance().getReference().child("Call_history").child(mera);
+//                                            Query lastQuery = databaseReferencee.child(uskaId).orderByKey().limitToLast(1);
+//
+//                                            lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                                @Override
+//                                                public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                                                    Log.e("Val:",dataSnapshot.getKey());
+//
+////                                                    String message = dataSnapshot.child("chat").getValue().toString();
+////                                                    String who_told = dataSnapshot.child("who_tells").getValue().toString();
+////                                                    if(message!="" && !who_told.equals(firebaseUser.getUid())){
+////                                                        show_smart(message,who_told);
+////                                                    }
+//                                                }
+//
+//                                                @Override
+//                                                public void onCancelled(DatabaseError databaseError) {
+//                                                    // Handle possible errors.
+//                                                }
+//                                            });
+//                                            //show - hide smart reply
                                         }
 
                                         @Override
@@ -926,8 +1058,6 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
 
                         }
                     });
-
-                    /////
                 }
                 else if(dataSnapshot.hasChild("to")){
                     DatabaseReference ref2 = usr.child("to").child("uid");
@@ -938,6 +1068,84 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                             String phone_karne_wale_ka_id = dataSnapshot.getValue().toString();
 
                             uskaId = phone_karne_wale_ka_id;
+
+                            //check if smart reply exists
+                            DatabaseReference chk_exists = FirebaseDatabase.getInstance().getReference()
+                                    .child("smart_reply").child(firebaseUser.getUid());
+                            chk_exists.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        ///get reply in boxes
+
+                                        DatabaseReference get_reply = FirebaseDatabase.getInstance().getReference()
+                                                .child("smart_reply").child(firebaseUser.getUid()).child(uskaId);
+                                        get_reply.child("msg1").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                b11 = findViewById(R.id.b1);
+                                                if(dataSnapshot.getValue().toString().equals("")){
+                                                    b11.setVisibility(View.GONE);
+                                                }
+                                                else{
+                                                    b11.setVisibility(View.VISIBLE);
+                                                    b11.setText(dataSnapshot.getValue().toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                        get_reply.child("msg2").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                b21 = findViewById(R.id.b2);
+                                                if(dataSnapshot.getValue().toString().equals("")){
+                                                    b21.setVisibility(View.GONE);
+                                                }
+                                                else{
+                                                    b21.setVisibility(View.VISIBLE);
+                                                    b21.setText(dataSnapshot.getValue().toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                        get_reply.child("msg3").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                b31 = findViewById(R.id.b3);
+                                                if(dataSnapshot.getValue().toString().equals("")){
+                                                    b31.setVisibility(View.GONE);
+                                                }
+                                                else{
+                                                    b31.setVisibility(View.VISIBLE);
+                                                    b31.setText(dataSnapshot.getValue().toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+
+
 
                             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference()
                                     .child("Users").child(phone_karne_wale_ka_id).child("name");
@@ -1008,6 +1216,8 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
 
             }
         });
+
+
 
     }
 
@@ -1109,40 +1319,266 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
 
         Toast.makeText(this, "Ye kesa hai twice", Toast.LENGTH_SHORT).show();
         jugni(returnedText.getText().toString());
-        Time now = new Time();
-        now.setToNow();
 
-        ArrayList<FirebaseTextMessage> conversation = new ArrayList<FirebaseTextMessage>();
-        conversation.add(FirebaseTextMessage.createForLocalUser(
-                returnedText.getText().toString(), System.currentTimeMillis()));
 
-        FirebaseSmartReply smartReply = FirebaseNaturalLanguage.getInstance().getSmartReply();
-        smartReply.suggestReplies(conversation)
-                .addOnSuccessListener(new OnSuccessListener<SmartReplySuggestionResult>() {
-                    @Override
-                    public void onSuccess(SmartReplySuggestionResult result) {
-                        if (result.getStatus() == SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
-                            // The conversation's language isn't supported, so the
-                            // the result doesn't contain any suggestions.
-                            Toast.makeText(CallGoingActivity.this, "Na hua reply 1", Toast.LENGTH_SHORT).show();
-                        } else if (result.getStatus() == SmartReplySuggestionResult.STATUS_SUCCESS) {
-                            // Task completed successfully
-                            // ...
-                            for (SmartReplySuggestion suggestion : result.getSuggestions()) {
-                                Log.e("Reply:",suggestion.getText());
-                            }
-//                                close wgera kuch rheega..cuz it's passing same text each  time
+
+        //Log.e("Toggle at:",String.valueOf(toggleButton.isChecked()) + " at "+ firebaseUser.getUid());
+
+        //String who_said = "";
+        show_smart(returnedText.getText().toString(),firebaseUser.getUid());
+
+    }
+
+    private void show_smart(String message, String uid) {
+
+        DatabaseReference usr = FirebaseDatabase.getInstance().getReference()
+                .child("Calls").child(firebaseUser.getUid()).child("Call details");
+
+        //get user name  and uska id
+        usr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("from")){
+                    /////from ka naam
+                    DatabaseReference ref2 = usr.child("to").child("uid");
+                    ref2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            String phone_karne_wale_ka_id = dataSnapshot.getValue().toString();
+                            uskaId = phone_karne_wale_ka_id;
+
+                            DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference()
+                                    .child("Users").child(phone_karne_wale_ka_id).child("name");
+
+
+                            ref2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String nameo = dataSnapshot.getValue().toString();
+                                    uska_name = nameo;
+
+                                    ////change recycler view hist
+                                    mera = firebaseUser.getUid();
+                                    Log.e("show","smart reply");
+                                    Log.e("msg",message);
+
+
+                                    ArrayList<FirebaseTextMessage> conversation = new ArrayList<FirebaseTextMessage>();
+                                    conversation.add(FirebaseTextMessage.createForRemoteUser(
+                                            message, System.currentTimeMillis() ,"Dadi"));
+
+                                    FirebaseSmartReply smartReply = FirebaseNaturalLanguage.getInstance().getSmartReply();
+                                    smartReply.suggestReplies(conversation)
+                                            .addOnSuccessListener(new OnSuccessListener<SmartReplySuggestionResult>() {
+                                                @Override
+                                                public void onSuccess(SmartReplySuggestionResult result) {
+                                                    if (result.getStatus() == SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
+                                                        // The conversation's language isn't supported, so the
+                                                        // the result doesn't contain any suggestions.
+                                                        // Toast.makeText(CallGoingActivity.this, "Na hua reply 1", Toast.LENGTH_SHORT).show();
+                                                        Log.e("Lang not support","NO");
+                                                        DatabaseReference y = FirebaseDatabase.getInstance().getReference().child("smart_reply").
+                                                                child(uskaId).child(mera);
+
+                                                        SmartSuggestionList sop = new SmartSuggestionList("","","");
+                                                        DatabaseReference hammand = FirebaseDatabase.getInstance().getReference().child("smart_reply").
+                                                                child(uskaId);
+                                                        hammand.child(mera).setValue(sop)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (!task.isSuccessful()) {
+                                                                            Toast.makeText(CallGoingActivity.this, "Smart reply nhi gya re", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                });
+                                                    } else if (result.getStatus() == SmartReplySuggestionResult.STATUS_SUCCESS) {
+                                                        // Task completed successfully
+                                                        // ...
+                                                        Log.e("Text in box:",returnedText.getText().toString());
+                                                        String bam = result.getSuggestions().toString();
+                                                        Log.e("Bam:",bam);
+                                                        // [SmartReplySuggestion{text=How are you?, confidence=0.18774909},
+                                                        // SmartReplySuggestion{text=😊, confidence=0.0033598393},
+                                                        // SmartReplySuggestion{text=😟, confidence=-0.05351025}]
+
+                                                        // SmartReplySuggestion suggestion1  = result.getSuggestions()[0].getText();
+                                                        String[] jogi = new String[3];
+                                                        int p = 0;
+                                                        //b11.setText(bam);
+                                                        for (SmartReplySuggestion suggestion : result.getSuggestions()) {
+                                                            Log.e("Reply:",suggestion.getText());
+                                                            jogi[p++] = suggestion.getText();
+                                                        }
+
+                                                        DatabaseReference y = FirebaseDatabase.getInstance().getReference().child("smart_reply").
+                                                                child(uskaId).child(mera);
+
+                                                        SmartSuggestionList sop = new SmartSuggestionList(jogi[0],jogi[1],jogi[2]);
+                                                        DatabaseReference hammand = FirebaseDatabase.getInstance().getReference().child("smart_reply").
+                                                                child(uskaId);
+                                                        hammand.child(mera).setValue(sop)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (!task.isSuccessful()) {
+                                                                            Toast.makeText(CallGoingActivity.this, "Smart reply nhi gya re", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Task failed with an exception
+                                                    // ...
+                                                    Toast.makeText(CallGoingActivity.this, "Na hua reply", Toast.LENGTH_SHORT).show();
+                                                    Log.e("Failure","smart reply");
+                                                }
+                                            });
+//                                    DatabaseReference refi;
+//
+//                                    refi = FirebaseDatabase.getInstance().getReference("Call_history").child(mera).child(uskaId);
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Task failed with an exception
-                        // ...
-                        Toast.makeText(CallGoingActivity.this, "Na hua reply", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                else if(dataSnapshot.hasChild("to")){
+                    DatabaseReference ref2 = usr.child("to").child("uid");
+                    ref2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            String phone_karne_wale_ka_id = dataSnapshot.getValue().toString();
+
+                            uskaId = phone_karne_wale_ka_id;
+
+                            DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference()
+                                    .child("Users").child(phone_karne_wale_ka_id).child("name");
+                            ref2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String nameo = dataSnapshot.getValue().toString();
+                                    uska_name = nameo;
+
+                                    //change recycler view
+                                    mera = firebaseUser.getUid();
+                                    Log.e("show","smart reply");
+                                    Log.e("msg",message);
+
+
+                                    ArrayList<FirebaseTextMessage> conversation = new ArrayList<FirebaseTextMessage>();
+                                    conversation.add(FirebaseTextMessage.createForRemoteUser(
+                                            message, System.currentTimeMillis() ,"Dadi"));
+
+                                    FirebaseSmartReply smartReply = FirebaseNaturalLanguage.getInstance().getSmartReply();
+                                    smartReply.suggestReplies(conversation)
+                                            .addOnSuccessListener(new OnSuccessListener<SmartReplySuggestionResult>() {
+                                                @Override
+                                                public void onSuccess(SmartReplySuggestionResult result) {
+                                                    if (result.getStatus() == SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
+                                                        // The conversation's language isn't supported, so the
+                                                        // the result doesn't contain any suggestions.
+                                                        // Toast.makeText(CallGoingActivity.this, "Na hua reply 1", Toast.LENGTH_SHORT).show();
+                                                        Log.e("Lang not support","NO");
+                                                    } else if (result.getStatus() == SmartReplySuggestionResult.STATUS_SUCCESS) {
+                                                        // Task completed successfully
+                                                        // ...
+                                                        Log.e("Text in box:",returnedText.getText().toString());
+                                                        String bam = result.getSuggestions().toString();
+                                                        Log.e("Bam:",bam);
+                                                        // [SmartReplySuggestion{text=How are you?, confidence=0.18774909},
+                                                        // SmartReplySuggestion{text=😊, confidence=0.0033598393},
+                                                        // SmartReplySuggestion{text=😟, confidence=-0.05351025}]
+
+                                                        // SmartReplySuggestion suggestion1  = result.getSuggestions()[0].getText();
+                                                        String[] jogi = new String[3];
+                                                        int p = 0;
+                                                        //b11.setText(bam);
+                                                        for (SmartReplySuggestion suggestion : result.getSuggestions()) {
+                                                            Log.e("Reply:",suggestion.getText());
+                                                            jogi[p++] = suggestion.getText();
+                                                        }
+
+                                                        DatabaseReference y = FirebaseDatabase.getInstance().getReference().child("smart_reply").
+                                                                child(uskaId).child(mera);
+
+                                                        SmartSuggestionList sop = new SmartSuggestionList(jogi[0],jogi[1],jogi[2]);
+                                                        DatabaseReference hammand = FirebaseDatabase.getInstance().getReference().child("smart_reply").
+                                                                child(uskaId);
+                                                        hammand.child(mera).setValue(sop)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (!task.isSuccessful()) {
+                                                                            Toast.makeText(CallGoingActivity.this, "Smart reply nhi gya re", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Task failed with an exception
+                                                    // ...
+                                                    Toast.makeText(CallGoingActivity.this, "Na hua reply", Toast.LENGTH_SHORT).show();
+                                                    Log.e("Failure","smart reply");
+                                                }
+                                            });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    /////
+                }
+                else{
+                    Toast.makeText(CallGoingActivity.this, "call error", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CallGoingActivity.this ,MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        Log.e("Message",message);
+        Log.e("Uid",uid);
+        Log.e("Mera id",firebaseUser.getUid());
+
+
 
     }
 
@@ -1191,6 +1627,8 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                                                 DatabaseReference call_hist2 = FirebaseDatabase.getInstance().getReference().child("Call_history")
                                                         .child(kisko_kiya).child(firebaseUser.getUid());
                                                 call_hist2.push().setValue(dataSnapshot.getValue());
+
+
 
 
                                             }
@@ -1337,6 +1775,7 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                                                 result.put("time", res);
                                                 result.put("type", "chat");
                                                 result.put("who_tells", who_said);
+                                                result.put("url","");
 
                                                 call_hist.push().setValue(result);
 
@@ -1350,8 +1789,11 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                                                 result2.put("time", res);
                                                 result2.put("type", "chat");
                                                 result2.put("who_tells", who_said);
+                                                result2.put("url","");
 
                                                 call_hist2.push().setValue(result2);
+
+
 
                                             }
                                             @Override
@@ -1411,6 +1853,7 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                                                 result.put("time", res);
                                                 result.put("type", "chat");
                                                 result.put("who_tells", who_said);
+                                                result.put("url","");
 
                                                 call_hist.push().setValue(result);
 
@@ -1424,6 +1867,7 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
                                                 result2.put("time", res);
                                                 result2.put("type", "chat");
                                                 result2.put("who_tells", who_said);
+                                                result2.put("url","");
 
                                                 call_hist2.push().setValue(result2);
 
@@ -1526,7 +1970,6 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
         }
         return message;
     }
-
 
     //change real time language
     private void identifyLanguage(String conv_to) {
@@ -1669,7 +2112,148 @@ public class CallGoingActivity extends AppCompatActivity implements RecognitionL
 
             }
         });
+    }
+
+    //change real time language for smart reply
+    private void identifyLanguage2(String conv_to) {
+        String sourceText = result.getText().toString();
+
+        FirebaseLanguageIdentification identifier = FirebaseNaturalLanguage.getInstance()
+                .getLanguageIdentification();
+
+        //mSourceLang.setText("Detecting..");
+
+        identifier.identifyLanguage(sourceText).addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s.equals("und")){
+                    Toast.makeText(getApplicationContext(),"Language Not Identified", Toast.LENGTH_SHORT).show();
+                    result.setText(sourceText);
+                }
+                else {
+                    getLanguageCode(s);
+                }
+            }
+        });
+
+    }
+
+    private void getLanguageCode2(String language) {
+
+        int langCode;
+        switch (language){
+            case "hi":
+                langCode = FirebaseTranslateLanguage.HI;
+                //mSourceLang.setText("Hindi");
+                break;
+            case "mr":
+                langCode = FirebaseTranslateLanguage.MR;
+                //mSourceLang.setText("Marathi");
+
+                break;
+            case "bn":
+                langCode = FirebaseTranslateLanguage.BN;
+                //mSourceLang.setText("Bengali");
+                break;
+
+            case "ta":
+                langCode = FirebaseTranslateLanguage.TA;
+                //mSourceLang.setText("Tamil");
+                break;
+
+            case "te":
+                langCode = FirebaseTranslateLanguage.TE;
+                //mSourceLang.setText("Telugu");
+                break;
+
+            case "en":
+                langCode = FirebaseTranslateLanguage.EN;
+                //mSourceLang.setText("English ha");
+                break;
+            default:
+                langCode = 0;
+        }
+        translateText(langCode);
+    }
+
+    private void translateText2(int langCode) {
+        //mTranslatedText.setText("Translating..");
+        DatabaseReference fbcode = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).child("fb_val");
+        fbcode.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                fb_code = dataSnapshot.getValue().toString();
+                int langCode2;
+                switch (fb_code){
+                    case "hi":
+                        langCode2 = FirebaseTranslateLanguage.HI;
+                        //mSourceLang.setText("Hindi");
+                        break;
+                    case "mr":
+                        langCode2 = FirebaseTranslateLanguage.MR;
+                        //mSourceLang.setText("Marathi");
+
+                        break;
+                    case "bn":
+                        langCode2 = FirebaseTranslateLanguage.BN;
+                        //mSourceLang.setText("Bengali");
+                        break;
+
+                    case "ta":
+                        langCode2 = FirebaseTranslateLanguage.TA;
+                        //mSourceLang.setText("Tamil");
+                        break;
+
+                    case "te":
+                        langCode2 = FirebaseTranslateLanguage.TE;
+                        //mSourceLang.setText("Telugu");
+                        break;
+
+                    case "en":
+                        langCode2 = FirebaseTranslateLanguage.EN;
+                        //mSourceLang.setText("English ha");
+                        break;
+                    default:
+                        langCode2 = 0;
+                }
+                if(langCode == langCode2){
+                    Toast.makeText(CallGoingActivity.this, "Same lang on both sides", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(CallGoingActivity.this, "lc1 and2 : " + langCode + " " +langCode2, Toast.LENGTH_SHORT).show();
+
+                FirebaseTranslatorOptions options = new FirebaseTranslatorOptions.Builder()
+                        //from language
+                        .setSourceLanguage(langCode)
+                        // to language
+                        .setTargetLanguage(langCode2)
+                        .build();
+
+                final FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance()
+                        .getTranslator(options);
+
+                FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
+                        .build();
 
 
+
+                translator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        translator.translate(result.getText().toString()).addOnSuccessListener(new OnSuccessListener<String>() {
+                            @Override
+                            public void onSuccess(String s) {
+                                result.setText(s);
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
